@@ -5,6 +5,7 @@ init();
 var x = document.querySelector('#score-0').textContent;
 console.log(x);
 
+var lastDice;
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
     if(gamePlaying){
@@ -15,14 +16,19 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
         var diceDOM =  document.querySelector('.dice');
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
-
         // 3. Update the round score
-        if(dice !== 1){
+        if(dice === 6 && lastDice === 6){
+            scores[activePlayer] = 0;
+            document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+            nextPlayer();
+        } else if(dice !== 1) {
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
-        }else{
+        } else {
             nextPlayer();
         }
+
+        lastDice = dice;
     }
     
 });
@@ -76,6 +82,4 @@ function init(){
     document.querySelector('.player-0-panel').classList.remove('active');
     document.querySelector('.player-1-panel').classList.remove('active');
     document.querySelector('.player-0-panel').classList.add('active');
-    
-    
 }
